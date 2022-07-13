@@ -3,6 +3,7 @@ package com.prokopchuk.nasa.service;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.tuple.Pair;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,7 @@ public class NasaPicturesService {
     private static final String PICTURES_URL = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
 
     @SneakyThrows
+    @Cacheable(value = "largestPictureCache", key = "#sol")
     public String findLargestPictureUrl(String apiKey, int sol) {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(PICTURES_URL)
